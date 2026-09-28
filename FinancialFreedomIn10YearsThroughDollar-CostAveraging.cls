@@ -41,6 +41,8 @@
 % 设置页眉页脚
 \usepackage{fancyhdr}
 \usepackage{emptypage}
+\newcommand{\currentchapterhead}{ }
+\newcommand{\setrunninghead}[1]{\gdef\currentchapterhead{#1}}
 \fancypagestyle{tocstyle}{
     \fancyhf{}
     \renewcommand{\headrulewidth}{0.35pt}
@@ -54,7 +56,7 @@
 \fancypagestyle{docstyle}{
     \fancyhf{}
     \renewcommand{\headrulewidth}{0.35pt}
-    \fancyhead[CO]{{\kaishu{\small{\rightmark}}}} % 奇数页页眉为文章标题
+    \fancyhead[CO]{{\kaishu{\small{\currentchapterhead}}}} % 奇数页页眉固定为当前章标题
     \fancyhead[CE]{{\kaishu{\small{定投十年财务自由}}}} % 偶数页页眉
     \fancyfoot[C]{\small{\thepage}}
 }
@@ -81,6 +83,8 @@
 \setlength{\parskip}{0.25em}
 
 \usepackage[stable]{footmisc}
+\usepackage{perpage}
+\MakePerPage{footnote}
 
 \usepackage{hyperref}
 \hypersetup{
@@ -103,6 +107,7 @@
 \titlespacing*{\section}{0pt}{-1ex plus -.2ex minus -.2ex}{2.3ex plus .2ex}
 \titleformat{\subsection}[block]{\raggedright\heiti \setstretch{1.35} \zihao{-3} }{ \thesubsection}{0em}{\phantomsection}[]
 \titlespacing*{\subsection}{0pt}{1.5ex plus .2ex}{1ex plus .2ex}
+\titleformat{\subsubsection}[block]{\raggedright\heiti}{\thesubsubsection}{0em}{\phantomsection}[]
 \titlespacing*{\subsubsection}{0pt}{5pt}{5pt}
 
 
@@ -122,6 +127,7 @@
 \renewcommand{\tablename}{表}
 
 % 目录中让次级标题相对章标题缩进
+\setcounter{tocdepth}{2}
 \makeatletter
 \renewcommand*{\l@section}[2]{\@dottedtocline{1}{0em}{4em}{\bfseries #1}{\bfseries #2}}
 \renewcommand*{\l@subsection}{\@dottedtocline{2}{2em}{4em}}
@@ -130,6 +136,8 @@
 % 章标题在正文中分两行，在目录中保留章号与标题间距
 \newcommand{\chaptertitle}[2]{%
     \gdef\thefigure{#1.\arabic{figure}}%
+    \setcounter{figure}{0}%
+    \gdef\currentchapterhead{第#1章\q #2}%
     \section*{第#1章\\#2}%
     \phantomsection%
     \addcontentsline{toc}{section}{第#1章\protect\q #2}%
